@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simple Processing App</title>
+	<style>
+		canvas {
+			width: 400px;
+			height: 400px;
+			border: 2px solid black;
+		}
+		.error {
+			background-color: pink;
+			color: red;
+			padding: 1em;
+			border: 2px solid red;
+			margin-bottom: 10px;
+			width: calc(400px - 2em);
+		}
+		.error:empty {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<aside class="error"></aside>
+	<canvas></canvas>
+	<script src="bower_components/Processing.js/processing.min.js"></script>
+	<script src="bower_components/qwest/qwest.min.js"></script>
+	<script>
+		(function() {
+			'use strict'
+			var errorArea, currentCode, attemptRefresh, processingInstance;
+			errorArea = document.querySelector('.error');
+
+			processingInstance = new Processing(document.querySelector('canvas'), function(p) {
+				p.size(400, 400);
+			});
+			attemptRefresh = function() {
+				qwest.get("code.js").then(function(code) {
+					if(code === currentCode) return;
+					currentCode = code;
+
+					errorArea.innerText = "";
+					processingInstance.background(255, 255, 255);
+					processingInstance.noFill();
+					try {
+						Processing.compile(code).attach(processingInstance);
+					} catch(err) {
+						console.error(err);
+						errorArea.innerText = err.message;
+					}
+				});
+
+				setTimeout(attemptRefresh, 3000);
+			}
+
+			attemptRefresh()
+		})()
+	</script>
+</body>
+</html>
