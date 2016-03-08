@@ -62,7 +62,7 @@ animals[3].friends = friends;
 
 function search (animalName) {
     for (var i = 0; i < animals.length; i++) {
-        if (animalName === animals[i].name){
+        if (animalName.toUpperCase() === animals[i].name.toUpperCase()){
             return animals[i];
         }
     }
@@ -70,5 +70,59 @@ function search (animalName) {
 }
 
 function edit (animalName, animalObject) {
-    for (var i = 0; i < animals.length; i++)
+    var match = search(animalName);
+    if (match) {
+        var index = animals.indexOf(match);
+        animals[index] = animalObject;
+    }
 }
+
+function remove(animalName) {
+    for (var i = 0; i < animals.length; i++) {
+        animals.slpice(i, 1);
+    }
+}
+
+function create (object) {
+    if (object.name.length && object.species.length > 0) {
+        for (var i = 0; i < animals.length; i++){
+            if (object.name === animals[i].name)
+        }
+    }
+}
+
+/*Write a function called edit that:
+
+    Takes 2 parameters, a name of an animal and an object
+
+If an animal with that name exists, replace it's entire object with the new object
+
+  Otherwise do nothing
+
+Test it on the website*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*var create = function (object) {
+    if (!object.name.length && !object.species.length) return;
+        
+    for (var i = 0; i < animals.length; i++) {
+        if (object.name === animals[i].name) {
+            return;
+        }
+    }
+    if (exist === false) {
+        
+    }
+}*/
+
